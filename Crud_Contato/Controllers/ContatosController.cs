@@ -49,14 +49,27 @@ namespace Crud_Contato.Controllers
         }
 
         // POST: Contatos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Telefone,Email")] Contato contato)
         {
             if (ModelState.IsValid)
             {
+                bool telefoneExistente = await _context.Contatos.AnyAsync(c => c.Telefone == contato.Telefone);
+                bool emailExistente = await _context.Contatos.AnyAsync(c => c.Email == contato.Email);
+
+                if (telefoneExistente)
+                {
+                    ModelState.AddModelError("Telefone", "Já existe um contato com este telefone.");
+                    return View(contato);
+                }
+
+                if (emailExistente)
+                {
+                    ModelState.AddModelError("Email", "Já existe um contato com este e-mail.");
+                    return View(contato);
+                }
+
                 _context.Add(contato);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -81,8 +94,6 @@ namespace Crud_Contato.Controllers
         }
 
         // POST: Contatos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Telefone,Email")] Contato contato)
