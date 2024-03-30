@@ -28,7 +28,7 @@ namespace Crud_Contato.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Telfone")
+                    b.Property<string>("Telefone")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

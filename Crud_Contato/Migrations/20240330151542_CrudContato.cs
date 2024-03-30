@@ -18,7 +18,7 @@ namespace Crud_Contato.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(type: "varchar", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Telfone = table.Column<string>(type: "varchar", nullable: false)
+                    Telefone = table.Column<string>(type: "varchar", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")

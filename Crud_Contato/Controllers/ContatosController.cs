@@ -53,7 +53,7 @@ namespace Crud_Contato.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Telfone,Email")] Contato contato)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Telefone,Email")] Contato contato)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Crud_Contato.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Telfone,Email")] Contato contato)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Telefone,Email")] Contato contato)
         {
             if (id != contato.Id)
             {
