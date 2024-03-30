@@ -1,28 +1,26 @@
-﻿using System;
+﻿using Crud_Contato.Interfaces;
+using Crud_Contato.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Crud_Contato.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace Crud_Contato.Controllers
 {
-    [Authorize]
     public class ContatosController : Controller
     {
         private readonly BancoDeDados _context;
+        private readonly IContatoService _contato;
 
-        public ContatosController(BancoDeDados context)
+        public ContatosController(BancoDeDados context, IContatoService contato)
         {
             _context = context;
+            _contato = contato;
         }
 
         // GET: Contatos
-        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Contatos.ToListAsync());
@@ -74,8 +72,7 @@ namespace Crud_Contato.Controllers
                     return View(contato);
                 }
 
-                _context.Add(contato);
-                await _context.SaveChangesAsync();
+                await _contato.Create(contato);
                 return RedirectToAction(nameof(Index));
             }
             return View(contato);
@@ -111,8 +108,7 @@ namespace Crud_Contato.Controllers
             {
                 try
                 {
-                    _context.Update(contato);
-                    await _context.SaveChangesAsync();
+                    await _contato.Update(contato);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -154,8 +150,8 @@ namespace Crud_Contato.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var contato = await _context.Contatos.FindAsync(id);
-            _context.Contatos.Remove(contato);
-            await _context.SaveChangesAsync();
+
+            await _contato.Remove(contato);
             return RedirectToAction(nameof(Index));
         }
 

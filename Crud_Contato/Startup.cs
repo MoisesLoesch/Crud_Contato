@@ -1,4 +1,7 @@
+using Crud_Contato.Interfaces;
 using Crud_Contato.Models;
+using Crud_Contato.Repository;
+using Crud_Contato.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,6 +25,9 @@ namespace Crud_Contato
         {
             services.AddControllersWithViews();
             services.AddDbContext<BancoDeDados>();
+
+            services.AddScoped<IContatoService, ContatoService>();
+            services.AddScoped<IContatoRepository, ContatoRepository>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options =>
