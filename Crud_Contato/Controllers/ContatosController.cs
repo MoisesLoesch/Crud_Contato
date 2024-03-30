@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Crud_Contato.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Crud_Contato.Controllers
 {
+    [Authorize]
     public class ContatosController : Controller
     {
         private readonly BancoDeDados _context;
@@ -19,6 +22,7 @@ namespace Crud_Contato.Controllers
         }
 
         // GET: Contatos
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Contatos.ToListAsync());

@@ -1,4 +1,5 @@
 using Crud_Contato.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,14 @@ namespace Crud_Contato
         {
             services.AddControllersWithViews();
             services.AddDbContext<BancoDeDados>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(options =>
+                    {
+                        options.LoginPath = "/Conta/Login"; // Rota para a página de login
+                        options.AccessDeniedPath = "/Conta/AcessoNegado"; // Rota para a página de acesso negado
+                    });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

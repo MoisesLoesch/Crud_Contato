@@ -13,6 +13,7 @@ namespace Crud_Contato.Models
         }
 
         public DbSet<Contato> Contatos { get; set; }
+        public DbSet<AdminUser> AdminUser { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder) 
         {
