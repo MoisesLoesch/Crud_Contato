@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.IO;
 
 namespace Crud_Contato.Models
 {
@@ -17,9 +18,21 @@ namespace Crud_Contato.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder) 
         {
-            var serverVersion = new MySqlServerVersion(new Version(8, 0, 26));
-            var conexao = _configuration["ConnectionStrings:MariaDB"].ToString();
-            builder.UseMySql(connectionString: conexao, serverVersion: serverVersion);
+            if (!builder.IsConfigured)
+            {
+                IConfigurationRoot config = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+
+                var serverVersion = new MySqlServerVersion(new Version(8, 0, 26));
+                var conexao = _configuration["ConnectionStrings:MariaDB"].ToString();
+                builder.UseMySql(connectionString: conexao, serverVersion: serverVersion, mySqlOptions => mySqlOptions.EnableRetryOnFailure());
+            }
+
+            //var serverVersion = new MySqlServerVersion(new Version(8, 0, 26));
+            //var conexao = _configuration["ConnectionStrings:MariaDB"].ToString();
+            //builder.UseMySql(connectionString: conexao, serverVersion: serverVersion);
         }
     }
 }
