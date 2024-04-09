@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Data;
 
 namespace Crud_Contato
@@ -16,14 +18,19 @@ namespace Crud_Contato
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var dbContext = services.GetService<BancoDeDados>();
 
-                if (dbContext != null && dbContext.Database.GetDbConnection().State != ConnectionState.Open)
+                try
                 {
-                    dbContext.Database.OpenConnection();
-                    dbContext.Database.EnsureCreated();
+                    var dbContext = services.GetRequiredService<BancoDeDados>();
+                    dbContext.InitializeDatabase();
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "Ocorreu um erro ao tentar inicializar o banco de dados.");
                 }
             }
+
             app.Run();
         }
 

@@ -34,5 +34,10 @@ namespace Crud_Contato.Models
             //var conexao = _configuration["ConnectionStrings:MariaDB"].ToString();
             //builder.UseMySql(connectionString: conexao, serverVersion: serverVersion);
         }
+
+        public void InitializeDatabase() 
+        {
+            Database.Migrate();
+        }
     }
 }
