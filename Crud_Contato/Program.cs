@@ -22,6 +22,8 @@ namespace Crud_Contato
                 try
                 {
                     var dbContext = services.GetRequiredService<BancoDeDados>();
+                    dbContext.Database.OpenConnection();
+                    dbContext.Database.EnsureCreated();
                     dbContext.InitializeDatabase();
                 }
                 catch (Exception ex)
